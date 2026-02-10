@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Special ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  background:#0b0014;
+  display:flex;
+  align-items:center; 
+  justify-content:center;
+  font-family:Arial;
+  color:white;
+  overflow:hidden;
+}
+.card{
+  width:90%;
+  max-width:420px;
+  background:rgba(255,255,255,0.12);
+  padding:20px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(255,0,120,0.6);
+}
+.hidden{display:none}
+
+/* LETTER */
+.letter{
+  background:white;
+  color:black;
+  padding:15px;
+  border-radius:15px;
+  min-height:150px;
+}
+.typing{
+  font-size:17px;
+  line-height:1.6;
+}
+
+/* BUTTONS */
+button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  font-size:16px;
+  margin:8px;
+  cursor:pointer;
+}
+#yes{background:#00e676}
+#next{background:#ff4d79;color:white}
+
+/* PHOTOS */
+.slider{
+  width:100%;
+  height:200px;
+  margin-top:10px;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+}
+.slide{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  display:none;
+}
+.slide.active{display:block}
+
+/* FINAL */
+.final{
+  font-size:28px;
+  color:#ff4d79;
+  margin-top:15px;
+}
+
+/* FIREWORK HEARTS */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  font-size:20px;
+  animation:up 6s linear infinite;
+}
+@keyframes up{
+  from{transform:translateY(0);opacity:1}
+  to{transform:translateY(-110vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<!-- STEP 1 LETTER -->
+<div id="step1" class="letter">
+  <div id="text" class="typing"></div>
+</div>
+
+<!-- STEP 2 YES -->
+<div id="step2" class="hidden">
+  <h3>Will you be my Valentine? ❤️</h3>
+  <button id="yes" onclick="showNext()">YES 💖</button>
+</div>
+
+<!-- STEP 3 NEXT -->
+<div id="step3" class="hidden">
+  <button id="next" onclick="showPhotos()">NEXT ➡️</button>
+</div>
+
+<!-- STEP 4 PHOTOS -->
+<div id="step4" class="hidden">
+  <div class="slider">
+    <div class="slide active" style="background-image:url('https://picsum.photos/500/300?1')"></div>
+    <div class="slide" style="background-image:url('https://picsum.photos/500/300?2')"></div>
+    <div class="slide" style="background-image:url('https://picsum.photos/500/300?3')"></div>
+  </div>
+</div>
+
+<!-- STEP 5 FINAL -->
+<div id="step5" class="hidden">
+  <div class="final">I LOVE YOU ❤️</div>
+</div>
+
+</div>
+
+<audio id="song">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<script>
+// TELUGU POETRY
+const poem =
+"BOB BHAI ❤️\n\n" +
+"నువ్వు నా జీవితంలో\n" +
+"ఒక కవిత లాంటిదానివి…\n\n" +
+"చదివిన కొద్దీ\n" +
+"ఇంకా ఇంకా ఇష్టమవుతావు 💕\n\n" +
+"ఈ హృదయం నిన్నే కోరుతుంది…";
+
+let i=0;
+const t=document.getElementById("text");
+
+const type=setInterval(()=>{
+  if(i<poem.length){
+    t.innerHTML += poem[i]=="\n"?"<br>":poem[i];
+    i++;
+  }else{
+    clearInterval(type);
+    document.getElementById("step2").classList.remove("hidden");
+  }
+},60);
+
+function showNext(){
+  document.getElementById("step2").classList.add("hidden");
+  document.getElementById("step3").classList.remove("hidden");
+}
+
+function showPhotos(){
+  document.getElementById("step3").classList.add("hidden");
+  document.getElementById("step4").classList.remove("hidden");
+  document.getElementById("song").play();
+  startSlider();
+
+  setTimeout(()=>{
+    document.getElementById("step4").classList.add("hidden");
+    document.getElementById("step5").classList.remove("hidden");
+    fireworks();
+  },7000);
+}
+
+// SLIDER
+function startSlider(){
+  const slides=document.querySelectorAll(".slide");
+  let s=0;
+  setInterval(()=>{
+    slides[s].classList.remove("active");
+    s=(s+1)%slides.length;
+    slides[s].classList.add("active");
+  },2000);
+}
+
+// FIREWORK HEARTS
+function fireworks(){
+  setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(15+Math.random()*25)+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  },200);
+}
+</script>
+
+</body>
+</html>
